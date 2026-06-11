@@ -2,26 +2,22 @@
 
 This repository contains the Python scripts and notebooks used to stress-test Large Language Models (LLMs) against sarcastic financial text. The project maps out exactly where AI fails when reading subtle human social cues on social media.
 
-## 1. Problem Statement
+##  Problem Statement
 Many financial companies are letting large language models (LLMs) read online discussions to predict market trends. They do this because regular retail investors talk about markets online all the time, and their posts can actually move stock prices and trading volumes [1][2]. But there is a huge catch: recent studies show that these LLMs take everything literally and completely struggle to understand sarcasm [3].
 
 If a company leaves the AI to read these comments without any human monitoring, it will totally misinterpret the sarcasm. This messes up the sentiment data and feeds wrong information straight into automated trading bots, which can cause massive financial losses [1][2]. Research already shows that AI has major issues handling social ambiguity, consistency, and prompt sensitivity [1].
 
 This project uses community upvote data to stress-test ChatGPT and find out exactly where it goes wrong on these three specific points. Mapping out these errors will show why we still need humans in the workplace. Ultimately, it proves that when AI gets socially blind, human workers are necessary to act as risk auditors and logic gatekeepers.
 
-## 2. Motivation
+##  Motivation
 Companies are rapidly replacing human employees with automated AI tools. However, AI still has massive limitations, especially in the financial sector, where online peer reviews, stock portfolios, and crypto discussions are used to forecast economic trends and spot scams. If institutions use automated LLMs to monitor these areas, the AI will completely misread social feelings. This can lead to invalid decisions that cause serious financial losses for both institutions and customers.
 
 Both financial companies and retail investors care about this problem and will benefit from a solution that prevents dangerous data errors. The problem is incredibly difficult due to a major technical challenge: LLMs rely on literal keyword-matching algorithms rather than human social intuition. This causes the AI to completely fail when sarcastic text uses positive words to mean negative things.
 
 This problem is highly interesting because it analyses the level of sarcasm an LLM can detect, and whether its decisions flip when tested multiple times with slightly changed prompts. Since AI is taking over workplaces everywhere, now is the right time to prove that AI cannot be trusted alone and that human risk managers are still vital.
 
-## 3. Most Relevant Literature
-* **[1]** Bongini, P. et al. (2025). *The information power of social media for investment decisions: An AI-driven analysis of Reddit posts.* Journal of Financial Management, Markets and Institutions, 13(2).
-* **[2]** Sarkar, A. et al. (2022). *Evaluating impact of social media posts by executives on stock prices.* Proceedings of the ACM.
-* **[3]** Bojić, L. et al. (2025). *Comparing large language models and human annotators in latent content analysis of sentiment, political leaning, emotional intensity and sarcasm.* Scientific Reports, 15(11477).
 
-## 4. Research Questions, Objectives and Evaluation
+##  Research Questions, Objectives and Evaluation
 
 ### Research Questions
 The core aim of this project is to prove that LLMs like ChatGPT cannot understand sarcasm in a financial context. To find out where these models fail, this practical study will answer three specific research questions:
