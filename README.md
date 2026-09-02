@@ -2,94 +2,96 @@
 
 ## Overview  
 
-The project aims to stress-test open-source and closed-source large language models and assess their ability to understand sarcasm. The stress-testing methods used are data labelling, consistency in the answers when the same prompt is repeated twice, prompt sensitivity, prompt injection, identifying the topic discussed in comments,s and identifying the pragmatic functions discussed in the comments.
+The project aims to stress-test open-source and closed-source large language models and assess their ability to understand sarcasm. The stress-testing methods used are data labelling, consistency in the answers when the same prompt is repeated twice, prompt sensitivity, prompt injection, identifying the topic discussed in comments, and identifying the pragmatic functions discussed in the comments.
 
 ## Project Structure 
 
+```text
 Sarcasm_Final/  
-├──requirements.txt                         # Project dependencies and pinned library versions for pip installation
-├──Exploratory_Data_Analysis/
-│   ├──eda.ipynb                            # Python code for exploratory data analysis 
-│   ├──subrediit_counts.csv                 # Dataset containing unique subreddit values and its counts
-│   ├──subrediit_counts_filtered_1.csv      # Dataset containing unique subreddit values and its counts 100 and above 
-│   ├──subrediit_counts_filtered_2.csv      # Dataset containing unique subreddit values and its counts between 51 and 99
-│   ├──financial_sarcasm_dataset.csv        # A subset of the original dataset with selected subreddit values 
-│   ├──tiny_balanced_sarcasm.csv            # A tiny subset of the financial_sarcasm_dataset for conducting sample experiments
-│   ├──sample_experiments/
-│   │   ├──exp1.ipynb                       # python code for sample experiment to label the tiny_balanced_sarcasm.csv data
-│   │   ├──exp1_labeled.csv                 # Experiment 1 results 
-│   │   ├──exp2.ipynb                       # python code for sample experiment to check consistency on the tiny_balanced_sarcasm.csv data
-│   │   ├──exp2_labeled.csv                 # Experiment 2 results     
-│   │   ├──exp3.ipynb                       # python code for sample experiment to check prompt sensitivity on the tiny_balanced_sarcasm.csv data
-│   │   ├──exp3_labeled.csv                 # Experiment 3 results 
-│   │   ├──deepseek_result_analysis.ipynb   # python code to analyse the results of 3 sample experiments 
-│   ├──bitcoin.ipynb                        # Python code to extract bicoin data from the original dataset
-│   ├──bitcoin_only_data.csv                # Dataset containing all the comments that have subreddit as biotcoin 
-│   ├──final_bitcoin_data.csv               # Dataset containing selecetd comments that have subreddit value as bitcoin 
-│   ├──dataset_for_cs_llm.ipynb             # Python code to create a subset of the final_bitcoin_data without label colum to pass to closed source model
-│   ├──closed_source_data.csv               # Dataset for passing to closed source models 
-├──Data Labelling/ 
-│   ├──llama_temp0.ipynb                    # python code to label the data using llama3.2:3b with temparature = 0.0
-│   ├──llama_temp1.ipynb                    # python code to label the data using llama3.2:3b with temparature = 1.0
-│   ├──deepseek_temp0.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 0.0
-│   ├──deepseek_temp1.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 1.0
-│   ├──outputs.csv                          # open source model results 
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results
-│   ├──datalabeling.csv                     # Combined results from open source models and closed source models 
-│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
-├──Consistency/
-│   ├──llama_temp0.ipynb                    # python code to label the data for consistency test using llama3.2:3b with temparature = 0.0
-│   ├──llama_temp1.ipynb                    # python code to label the data for consistency test  using llama3.2:3b with temparature = 1.0
-│   ├──deepseek_temp0.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temparature = 0.0
-│   ├──deepseek_temp1.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temparature = 1.0
-│   ├──outputs.csv                          # open source model results
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results
-│   ├──consistency.csv                      # Combined results from open source models and closed source models 
-│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
-├──Prompt Sensitivity/
-│   ├──llama_temp0.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temparature = 0.0
-│   ├──llama_temp1.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temparature = 1.0
-│   ├──deepseek_temp0.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temparature = 0.0
-│   ├──deepseek_temp1.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temparature = 1.0
-│   ├──outputs.csv                          # open source model results
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results
-│   ├──prompt_sensitivity.csv               # Combined results from open source models and closed source models
-│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
-├──Prompt_Injection/
-│   ├──data_preparation.ipynb               # python code to inject data to original data 
-│   ├──prompt_injected_data.csv             # Prompt injected data for labeling
-│   ├──cs_prompt_injected_data.csv          # Prompt injected data for experimenting on closed source model 
-│   ├──llama_temp0.ipynb                    # python code to label the data llama3.2:3b with temparature = 0.0 after prompt injection using 
-│   ├──llama_temp1.ipynb                    # python code to label the data llama3.2:3b with temparature = 1.0 after prompt injection using
-│   ├──deepseek_temp0.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 0.0 after prompt injection using
-│   ├──deepseek_temp1.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 1.0 after prompt injection using
-│   ├──outputs.csv                          # open source model results
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results       
-│   ├──prompt_injection.csv                 # combined results of open source models and closed source models 
-│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
-├──Pragmatic_Function_Identification/ 
-│   ├──llama_temp0.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temparature = 0.0  
-│   ├──llama_temp1.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temparature = 1.0 
-│   ├──deepseek_temp0.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temparature = 0.0
-│   ├──deepseek_temp1.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temparature = 1.0
-│   ├──outputs.csv                          # open source model results
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results
-│   ├──combined_results.csv                 # combined results of open source models and closed source models 
-│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
-├──Subreddit_Identification/
-│   ├──llama_temp0.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temparature = 0.0 
-│   ├──llama_temp1.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temparature = 1.0 
-│   ├──deepseek_temp0.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temparature = 0.0 
-│   ├──deepseek_temp1.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temparature = 0.0 
-│   ├──subreddit_identifications.csv        # open source model results
-│   ├──chatgpt.csv                          # Chatgpt results
-│   ├──gemini.csv                           # Gemini results
-│   ├──visualisation.ipynb                  # python code to visualise closed source model results
+├── requirements.txt                         # Project dependencies and pinned library versions for pip installation
+├── Exploratory_Data_Analysis/
+│   ├── eda.ipynb                            # Python code for exploratory data analysis 
+│   ├── subrediit_counts.csv                 # Dataset containing unique subreddit values and its counts
+│   ├── subrediit_counts_filtered_1.csv      # Dataset containing unique subreddit values and its counts 100 and above 
+│   ├── subrediit_counts_filtered_2.csv      # Dataset containing unique subreddit values and its counts between 51 and 99
+│   ├── financial_sarcasm_dataset.csv        # A subset of the original dataset with selected subreddit values 
+│   ├── tiny_balanced_sarcasm.csv            # A tiny subset of the financial_sarcasm_dataset for conducting sample experiments
+│   ├── sample_experiments/
+│   │   ├── exp1.ipynb                       # python code for sample experiment to label the tiny_balanced_sarcasm.csv data
+│   │   ├── exp1_labeled.csv                 # Experiment 1 results 
+│   │   ├── exp2.ipynb                       # python code for sample experiment to check consistency on the tiny_balanced_sarcasm.csv data
+│   │   ├── exp2_labeled.csv                 # Experiment 2 results     
+│   │   ├── exp3.ipynb                       # python code for sample experiment to check prompt sensitivity on the tiny_balanced_sarcasm.csv data
+│   │   ├── exp3_labeled.csv                 # Experiment 3 results 
+│   │   └── deepseek_result_analysis.ipynb   # python code to analyse the results of 3 sample experiments 
+│   ├── bitcoin.ipynb                        # Python code to extract bicoin data from the original dataset
+│   ├── bitcoin_only_data.csv                # Dataset containing all the comments that have subreddit as biotcoin 
+│   ├── final_bitcoin_data.csv               # Dataset containing selecetd comments that have subreddit value as bitcoin 
+│   ├── dataset_for_cs_llm.ipynb             # Python code to create a subset of the final_bitcoin_data without label colum to pass to closed source model
+│   └── closed_source_data.csv               # Dataset for passing to closed source models 
+├── Data Labelling/ 
+│   ├── llama_temp0.ipynb                    # python code to label the data using llama3.2:3b with temparature = 0.0
+│   ├── llama_temp1.ipynb                    # python code to label the data using llama3.2:3b with temparature = 1.0
+│   ├── deepseek_temp0.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 0.0
+│   ├── deepseek_temp1.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 1.0
+│   ├── outputs.csv                          # open source model results 
+│   ├── chatgpt.csv                          # Chatgpt results
+│   ├── gemini.csv                           # Gemini results
+│   ├── datalabeling.csv                     # Combined results from open source models and closed source models 
+│   └── analysis.ipynb                       # python code to analyse the results from LLMs
+├── Consistency/
+│   ├── llama_temp0.ipynb                    # python code to label the data for consistency test using llama3.2:3b with temparature = 0.0
+│   ├── llama_temp1.ipynb                    # python code to label the data for consistency test  using llama3.2:3b with temparature = 1.0
+│   ├── deepseek_temp0.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temparature = 0.0
+│   ├── deepseek_temp1.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temparature = 1.0
+│   ├── outputs.csv                          # open source model results
+│   ├── chatgpt.csv                          # Chatgpt results
+│   ├── gemini.csv                           # Gemini results
+│   ├── consistency.csv                      # Combined results from open source models and closed source models 
+│   └── analysis.ipynb                       # python code to analyse the results from LLMs
+├── Prompt Sensitivity/
+│   ├── llama_temp0.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temparature = 0.0
+│   ├── llama_temp1.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temparature = 1.0
+│   ├── deepseek_temp0.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temparature = 0.0
+│   ├── deepseek_temp1.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temparature = 1.0
+│   ├── outputs.csv                          # open source model results
+│   ├── chatgpt.csv                          # Chatgpt results
+│   ├── gemini.csv                           # Gemini results
+│   ├── prompt_sensitivity.csv               # Combined results from open source models and closed source models
+│   └── analysis.ipynb                       # python code to analyse the results from LLMs
+├── Prompt_Injection/
+│   ├── data_preparation.ipynb               # python code to inject data to original data 
+│   ├── prompt_injected_data.csv             # Prompt injected data for labeling
+│   ├── cs_prompt_injected_data.csv          # Prompt injected data for experimenting on closed source model 
+│   ├── llama_temp0.ipynb                    # python code to label the data llama3.2:3b with temparature = 0.0 after prompt injection using 
+│   ├── llama_temp1.ipynb                    # python code to label the data llama3.2:3b with temparature = 1.0 after prompt injection using
+│   ├── deepseek_temp0.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 0.0 after prompt injection using
+│   ├── deepseek_temp1.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 1.0 after prompt injection using
+│   ├── outputs.csv                          # open source model results
+│   ├── chatgpt.csv                          # Chatgpt results
+│   ├── gemini.csv                           # Gemini results       
+│   ├── prompt_injection.csv                 # combined results of open source models and closed source models 
+│   └── analysis.ipynb                       # python code to analyse the results from LLMs
+├── Pragmatic_Function_Identification/ 
+│   ├── llama_temp0.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temparature = 0.0  
+│   ├── llama_temp1.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temparature = 1.0 
+│   ├── deepseek_temp0.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temparature = 0.0
+│   ├── deepseek_temp1.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temparature = 1.0
+│   ├── outputs.csv                          # open source model results
+│   ├── chatgpt.csv                          # Chatgpt results
+│   ├── gemini.csv                           # Gemini results
+│   ├── combined_results.csv                 # combined results of open source models and closed source models 
+│   └── analysis.ipynb                       # python code to analyse the results from LLMs
+└── Subreddit_Identification/
+    ├── llama_temp0.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temparature = 0.0 
+    ├── llama_temp1.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temparature = 1.0 
+    ├── deepseek_temp0.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temparature = 0.0 
+    ├── deepseek_temp1.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temparature = 0.0 
+    ├── subreddit_identifications.csv        # open source model results
+    ├── chatgpt.csv                          # Chatgpt results
+    ├── gemini.csv                           # Gemini results
+    └── visualisation.ipynb                  # python code to visualise closed source model results
+
 
 
 ## Provenance of Code and Resources 
@@ -247,4 +249,4 @@ ollama list
 
 open the code file on vs code 
 select the environment stress for running the code 
-execute the code by clicking on run all
+execute the code by clicking on run all 
