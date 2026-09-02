@@ -154,6 +154,7 @@ ollama pull llama3.2:3b
 
 Verify if the installation is completed successfully by running the bash command 
 
+Bash
 ollama list
 
 ### 5. Run the code on VS Code 
