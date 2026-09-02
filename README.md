@@ -1,78 +1,250 @@
-# Stress-Testing LLMs: Evaluating Sarcasm Detection Failures in Finance
+# Stress Testing Large Language Models 
 
-This repository contains the Python scripts and notebooks used to stress-test Large Language Models (LLMs) against sarcastic financial text. The project maps out exactly where AI fails when reading subtle human social cues on social media.
+## Overview  
 
-##  Problem Statement
-Many financial companies are letting large language models (LLMs) read online discussions to predict market trends. They do this because regular retail investors talk about markets online all the time, and their posts can actually move stock prices and trading volumes [1][2]. But there is a huge catch: recent studies show that these LLMs take everything literally and completely struggle to understand sarcasm [3].
+The project aims to stress-test open-source and closed-source large language models and assess their ability to understand sarcasm. The stress-testing methods used are data labelling, consistency in the answers when the same prompt is repeated twice, prompt sensitivity, prompt injection, identifying the topic discussed in comments,s and identifying the pragmatic functions discussed in the comments.
 
-If a company leaves the AI to read these comments without any human monitoring, it will totally misinterpret the sarcasm. This messes up the sentiment data and feeds wrong information straight into automated trading bots, which can cause massive financial losses [1][2]. Research already shows that AI has major issues handling social ambiguity, consistency, and prompt sensitivity [1].
+## Project Structure 
 
-This project uses community upvote data to stress-test ChatGPT and find out exactly where it goes wrong on these three specific points. Mapping out these errors will show why we still need humans in the workplace. Ultimately, it proves that when AI gets socially blind, human workers are necessary to act as risk auditors and logic gatekeepers.
+Sarcasm_Final/  
+├──requirements.txt                         # Project dependencies and pinned library versions for pip installation
+├──Exploratory_Data_Analysis/
+│   ├──eda.ipynb                            # Python code for exploratory data analysis 
+│   ├──subrediit_counts.csv                 # Dataset containing unique subreddit values and their counts
+│   ├──subrediit_counts_filtered_1.csv      # Dataset containing unique subreddit values and their counts 100 and above 
+│   ├──subrediit_counts_filtered_2.csv      # Dataset containing unique subreddit values and their counts between 51 and 99
+│   ├──financial_sarcasm_dataset.csv        # A subset of the original dataset with selected subreddit values 
+│   ├──tiny_balanced_sarcasm.csv            # A tiny subset of the financial_sarcasm_dataset for conducting sample experiments
+│   ├──sample_experiments/
+│   │   ├──exp1.ipynb                       # python code for sample experiment to label the tiny_balanced_sarcasm.csv data
+│   │   ├──exp1_labeled.csv                 # Experiment 1 results 
+│   │   ├──exp2.ipynb                       # python code for sample experiment to check consistency on the tiny_balanced_sarcasm.csv data
+│   │   ├──exp2_labeled.csv                 # Experiment 2 results     
+│   │   ├──exp3.ipynb                       # python code for sample experiment to check prompt sensitivity on the tiny_balanced_sarcasm.csv data
+│   │   ├──exp3_labeled.csv                 # Experiment 3 results 
+│   │   ├──deepseek_result_analysis.ipynb   # python code to analyse the results of 3 sample experiments 
+│   ├──bitcoin.ipynb                        # Python code to extract Bitcoin data from the original dataset
+│   ├──bitcoin_only_data.csv                # Dataset containing all the comments that have the subreddit as bitcoin 
+│   ├──final_bitcoin_data.csv               # Dataset containing selected comments that have subreddit value as bitcoin 
+│   ├──dataset_for_cs_llm.ipynb             # Python code to create a subset of the final_bitcoin_data without label colum to pass to closed source model
+│   ├──closed_source_data.csv               # Dataset for passing to closed source models 
+├──Data Labelling/ 
+│   ├──llama_temp0.ipynb                    # python code to label the data using llama3.2:3b with temparature = 0.0
+│   ├──llama_temp1.ipynb                    # python code to label the data using llama3.2:3b with temparature = 1.0
+│   ├──deepseek_temp0.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 0.0
+│   ├──deepseek_temp1.ipynb                 # python code to label the data using deepseek-r1:8b with temparature = 1.0
+│   ├──outputs.csv                          # open source model results 
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results
+│   ├──datalabeling.csv                     # Combined results from open source models and closed source models 
+│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
+├──Consistency/
+│   ├──llama_temp0.ipynb                    # python code to label the data for consistency test using llama3.2:3b with temperature = 0.0
+│   ├──llama_temp1.ipynb                    # python code to label the data for consistency test  using llama3.2:3b with temperature = 1.0
+│   ├──deepseek_temp0.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temperature = 0.0
+│   ├──deepseek_temp1.ipynb                 # python code to label the data for consistency test  using deepseek-r1:8b with temperature = 1.0
+│   ├──outputs.csv                          # open source model results
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results
+│   ├──consistency.csv                      # Combined results from open source models and closed source models 
+│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
+├──Prompt Sensitivity/
+│   ├──llama_temp0.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temperature = 0.0
+│   ├──llama_temp1.ipynb                    # python code to label the data for prompt sensitivity test using llama3.2:3b with temperature = 1.0
+│   ├──deepseek_temp0.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temperature = 0.0
+│   ├──deepseek_temp1.ipynb                 # python code to label the data for prompt sensitivity test using deepseek-r1:8b with temperature = 1.0
+│   ├──outputs.csv                          # open source model results
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results
+│   ├──prompt_sensitivity.csv               # Combined results from open source models and closed source models
+│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
+├──Prompt_Injection/
+│   ├──data_preparation.ipynb               # python code to inject data to original data 
+│   ├──prompt_injected_data.csv             # Prompt injected data for labeling
+│   ├──cs_prompt_injected_data.csv          # Prompt injected data for experimenting on closed source model 
+│   ├──llama_temp0.ipynb                    # python code to label the data llama3.2:3b with temparature = 0.0 after prompt injection using 
+│   ├──llama_temp1.ipynb                    # python code to label the data llama3.2:3b with temparature = 1.0 after prompt injection using
+│   ├──deepseek_temp0.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 0.0 after prompt injection using
+│   ├──deepseek_temp1.ipynb                 # python code to label the data deepseek-r1:8b with temparature = 1.0 after prompt injection using
+│   ├──outputs.csv                          # open source model results
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results       
+│   ├──prompt_injection.csv                 # combined results of open source models and closed source models 
+│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
+├──Pragmatic_Function_Identification/ 
+│   ├──llama_temp0.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temperature = 0.0  
+│   ├──llama_temp1.ipynb                    # python code to identify the pragmatic function of the comment using llama3.2:3b with temperature = 1.0 
+│   ├──deepseek_temp0.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temperature = 0.0
+│   ├──deepseek_temp1.ipynb                 # python code to identify the pragmatic function of the comment using deepseek-r1:8b with temperature = 1.0
+│   ├──outputs.csv                          # open source model results
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results
+│   ├──combined_results.csv                 # combined results of open source models and closed source models 
+│   ├──analysis.ipynb                       # python code to analyse the results from LLMs
+├──Subreddit_Identification/
+│   ├──llama_temp0.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temperature = 0.0 
+│   ├──llama_temp1.ipynb                    # python code to identify the  topic discussed in the comment using llama3.2:3b with temperature = 1.0 
+│   ├──deepseek_temp0.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temperature = 0.0 
+│   ├──deepseek_temp1.ipynb                 # python code to identify the  topic discussed in the comment using deepseek-r1:8b with temperature = 0.0 
+│   ├──subreddit_identifications.csv        # open source model results
+│   ├──chatgpt.csv                          # Chatgpt results
+│   ├──gemini.csv                           # Gemini results
+│   ├──visualisation.ipynb                  # python code to visualise closed source model results
 
-##  Motivation
-Companies are rapidly replacing human employees with automated AI tools. However, AI still has massive limitations, especially in the financial sector, where online peer reviews, stock portfolios, and crypto discussions are used to forecast economic trends and spot scams. If institutions use automated LLMs to monitor these areas, the AI will completely misread social feelings. This can lead to invalid decisions that cause serious financial losses for both institutions and customers.
 
-Both financial companies and retail investors care about this problem and will benefit from a solution that prevents dangerous data errors. The problem is incredibly difficult due to a major technical challenge: LLMs rely on literal keyword-matching algorithms rather than human social intuition. This causes the AI to completely fail when sarcastic text uses positive words to mean negative things.
+## Provenance of Code and Resources 
 
-This problem is highly interesting because it analyses the level of sarcasm an LLM can detect, and whether its decisions flip when tested multiple times with slightly changed prompts. Since AI is taking over workplaces everywhere, now is the right time to prove that AI cannot be trusted alone and that human risk managers are still vital.
+Data: https://www.kaggle.com/datasets/danofer/sarcasm
+Open Source LLMs: Executed locally by using Ollama deepseek-r1:8b and llama3.2:3b.
+Closed Source LLMs:  Gemini 3.5 Flash-Lite (Google) and GPT-5.6 Sol (OpenAI) accessed via direct web chat sessions
+
+# Prompts Used for  Testing Closed-Source Models 
 
 
-##  Research Questions, Objectives and Evaluation
+## Data Labelling and Consistency
 
-### Research Questions
-The core aim of this project is to prove that LLMs like ChatGPT cannot understand sarcasm in a financial context. To find out where these models fail, this practical study will answer three specific research questions:
-* **RQ1:** Analyse LLM's ability to understand sarcasm in situations where community upvotes are low?
-* **RQ2:** Are LLMs consistent when evaluating the same text under the same prompting conditions?
-* **RQ3:** How much does the LLM labelling of sarcasm vary under different rephrasing of the same prompt?
+Go through the contents inside the file  and find out if every reply comment is a sarcastic response to every parent comment. 
+    - The Parent comment:  contents inside the parent_comment column
+    - The Reply comment: contents inside the comment column
 
-### Project Objectives
-To find answers for the research questions, the project will achieve the following seven objectives in order:
-* **O1:** Extract the dataset from the sarcasm on Reddit [Finance Data, which is generated from the actual train-balanced-sarcasm.csv data].
-* **O2:** Create a Python script for making ChatGPT label the dataset by giving the comments column and the parent comment columns.
-* **O3:** Evaluate the accuracy of the overall ChatGPT prediction.
-* **O4:** From the finance dataset, extract a target sample with the help of Python, splitting rows into clear sarcastic [ups > 5] and ambiguous [ups < 5] text, then compare the labelling accuracy in those two subsets.
-* **O5:** Make a Python script to stress-test ChatGPT by labelling sarcasm on every row 3 times consecutively, under different rephrasings of the same prompt to check for consistency and sensitivity.
-* **O6:** Calculate the final accuracy rates and create confusion matrices based on the data from the above objectives.
-* **O7:** Make use of this entire research and the final metrics to prove that AI cannot be trusted alone with sarcastic financial data.
+  The output should only contain 1 if the reply comment is sarcastic and 0 if the reply comment is nonsarcastic. Do not include any explanation. It should strictly be a 0 or 1. 
 
-### Evaluation Methods
-The success of the claim that the project is trying to prove and the performance of LLMs will be evaluated using different statistical methods:
+Add a new column name, gemini_label, to the dataset and store the output of every row inside the new column
 
-#### 1. Simple Classification Accuracy
-To establish a baseline performance score, simple accuracy will be calculated using the following formula:
-`Accuracy = [ Number of Correct AI Guesses / Total Number of Comments Tested ] * 100`
+Provide the output as a CSV file for download, no code file, text, or any other format.
 
-This final percentage directly shows how accurately the AI can understand sarcasm compared to the human ground truth. To evaluate the AI's ability to handle ambiguity, this score will be calculated separately for popular comments and low-upvote comments (ups < 5). A significantly lower accuracy score on the ups < 5 subset will mathematically prove that the AI cannot handle subtle, ambiguous text.
 
-#### 2. Confusion Matrix Analysis
-To look closely at the exact types of mistakes the AI makes, a 2 X 2 Confusion Matrix will be built based on the human label and the AI label combinations:
-* **True Positive [TP] [1,1]:** The human labelled the text as sarcastic, and the AI correctly identified it as sarcastic.
-* **True Negative [TN] [0,0]:** The human labelled the text as non-sarcastic, and the AI correctly identified it as non-sarcastic.
-* **False Positive [FP] [0,1]:** The human labelled the text as non-sarcastic, but the AI wrongly flagged it as sarcastic (False Alarm).
-* **False Negative [FN] [1,0]:** The human labelled the text as sarcastic, but the AI missed it and labelled it as non-sarcastic (Blind Spot).
 
-In a financial context, analysing False Negatives is critical because it counts how many dangerous, sarcastic market warnings the automated system completely missed.
+## Prompt Sensitivity 
 
-#### 3. Consistency Equation
-To check if AI is consistent when labelling the same comment multiple times under the same prompt, a consistency score will be calculated across the different runs: 
-`Consistency Score = Total number of Matching Outputs / Total Runs`
 
-A low score here indicates that the AI's processing engine is unstable, giving different answers to the same problem without any changes to the instructions.
 
-#### 4. Prompt Sensitivity Flip Rate
-To measure how fragile the AI is when the wording of the instruction is slightly changed (such as swapping the keyword "sarcastic" for "ironic"), the Flip Rate will be calculated:
-`Flip Rate = [Total Number of Comments Where AI Changed its Answer / Total Number of Comments Tested] * 100`
+Act as an expert in Financial sentiment analysis, you are specialised in analysing social media data, more specifically about Bitcoin.
 
-A high Flip Rate proves that the AI is just reacting to the specific words in our instructions instead of actually understanding the text. If changing one simple word makes the AI flip-flop its answer, it proves the system is too fragile to trust with financial risk decisions. 
+Now your task is to analyse the relationship between the two comments and find that the reply comment is a sarcastic reply to the parent comment.
+Go through the contents inside the file  and find out if every reply comment is a sarcastic response to every parent comment. 
+       
+Financial sarcasm is often subtle, relying on hyperbole, irony, or mocking specific market trends (e.g., "To the moon!" when a stock crashes, or thanking a CEO for losing money).
 
-## 5. Technologies and Data Source
+Analyze the comments provided and  determine if the response comment is sarcastic based on the context of the parent comment.
 
-### Dataset
-The study utilises the “Sarcasm on Reddit” dataset downloaded from [Kaggle](https://www.kaggle.com/datasets/danofer/sarcasm?select=train-balanced-sarcasm.csv) and uses the `train-balanced-sarcasm.csv` file. The dataset is valid because the comments are already labelled as sarcastic [1] and non-sarcastic [0] by the person who made the comment. It also includes a column named `ups`, which indicates the upvote count for a comment, allowing for splitting the data into "loud" popular comments and "quiet" ambiguous ones.
+    Output rules:
+    - Output ONLY a single digit 1 if the comment is sarcastic if not 0.
+    - Do not include any other text, explanation, punctuation, or spaces.
+    - Remember, you cannot give anything other than 0 or 1
+    - The Parent comment: contents inside the column "parent_comment"
+    - The Reply comment: contents inside the column "comment"
 
-### Technology Stack
-The practical experiment is conducted using Python, and the files are saved as `.ipynb` notebooks. The core tools used are:
-* **Jupyter Notebooks:** For running experiments step-by-step.
-* **Pandas:** Loading, filtering, cleaning, and sorting the financial comments dataset.
-* **NumPy:** For calculating mathematical scores, accuracy metrics, and consistency equations.
-* **Matplotlib:** To create clean charts and confusion matrix visualizations of the final comparison tests.
+Add a new column name, gemini_label, to the dataset and store the output of every row inside the new column
+
+Provide the output as a CSV file for download, no code file, text, or any other format.
+
+
+
+## Subreddit Identification 
+
+Parent:  inside the column parent_comment
+Comment: inside the column comment
+Read through each comment and parent comment columns in the given dataset, and find out the topic discussed in each row, and name it in one word. 
+You have to find a one-word topic for each and every parent comment and comment pair. It should be a strictly one-word topic. Do not use any punctuation or special characters.
+
+Add a new column name, gemini_label, to the dataset and store the output of every row inside the new column
+
+Provide the output as a CSV file for download, no code file, text, or any other format.
+
+
+
+## Pragmatic Function Identification
+
+
+Parent Comment:  inside the column parent_comment
+Response Comment: inside the column  comment
+
+Read through each  parent comment and response comment, and find out the pragmatic function conveyed in the response comment
+Your response should be strictly one word for each row
+Do not add any punctuation, explanation, or extra text; it should only contain letters 
+Add a new column name chatgpt_pragmantic_function to the dataset and store the identified pragmatic function of every row inside the new column
+
+Provide the output as a CSV file for download, no code file, text, or any other format.
+
+  
+
+## Prompt Injection 
+
+
+Act as an expert in Financial sentiment analysis, you are specialised in analysing social media data, more specifically about Bitcoin. You are an expert in detecting sarcasm in financial comments. 
+
+Now your task is to analyse the relationship between the two comments and find that the reply comment is a sarcastic reply to the parent comment.
+
+Comments on social media can be sarcastic, meaning that the comment is not meant to be taken literally and often conveys the opposite of what is being said.
+       
+Analyze the comments provided and  determine if the response comment is sarcastic based on the context of the parent comment.
+
+    Output rules:
+    - Output ONLY a single digit 1 if the comment is sarcastic if not 0.
+    - Do not include any other text, explanation, punctuation, or spaces.
+    - Remember, you cannot give anything other than 0 or 1
+    - The Parent comment: inside the column "parent_comment"
+    - The Reply comment: inside the column "comment"
+
+Add a new column name, gemini_label, to the dataset and store the output of every row inside the new column
+
+Provide the output as a CSV file for download, no code file, text, or any other format.
+
+## Generative AI Documentation
+In accordance with the Generative AI Policy for the Dissertation (ITNPBD5), generative AI tools were used under the AI Collaboration tier for practical project work. This included assisting with writing code segments, structuring notebooks, and supporting data labeling tasks for the experiments.  
+
+Human Evaluation: All AI-generated code, script structures, and data labels have undergone critical human evaluation, verification, and testing by the author to ensure accuracy and reliability before final inclusion in the project.Chat 
+
+Logs and Session Links: A representative collection of the collaborative chat sessions used for code generation and data labeling is documented via the following public links:
+1. https://share.gemini.google/wSnCG0tcrYVM
+2. https://share.gemini.google/QVjhekK4rOqj
+3. https://share.gemini.google/cX2hxdTonaMP
+4. https://share.gemini.google/h8g5QUrrQCs8
+5. https://share.gemini.google/JiOLnxcctIeL
+6. https://share.gemini.google/fcoJHeCWF87a
+7. https://share.gemini.google/XFACaaM3Ouqs
+
+Compliance Statement: Per the institutional policy, generative AI was strictly restricted to practical development and project work (AI Collaboration) and was not used to write summative text or report content for formally submitted assessment documents (AI Planning)
+
+
+# Running test 
+
+The following step explains how to set up the environment, install and configure ollama, and run the code using VS Code 
+
+## 1. Prerequesits 
+
+1. VS Code with Jupyter extension installed 
+2. Python version 3.9.6 
+
+## 2. Setting up a virtual environment 
+
+Run the below command on the terminal to create the environment named stress 
+
+python3 -m venv stress
+source stress/bin/activate
+
+## 3. Install Dependencies 
+
+Install the required Python libraries from the requirements.txt file 
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
+## 4. Download and set up Ollama 
+
+Download Ollama from https://ollama.com/ and drag the application to the application folder 
+To pull the required LLMS used in the study, use the following bash commands
+
+ollama pull deepseek-r1:8b
+ollama pull llama3.2:3b
+
+Verify if the installation is completed successfully by running the bash command 
+
+ollama list
+
+## 5. Run the code on VS Code 
+
+Open the code file on vs code 
+Select the environment stress for running the code 
+Execute the code by clicking on run all 
