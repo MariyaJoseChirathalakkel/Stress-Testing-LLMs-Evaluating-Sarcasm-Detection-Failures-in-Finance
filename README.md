@@ -171,7 +171,8 @@ Execute the code by clicking on run all
 ## Project Structure 
 
 ```text
-Sarcasm_Final/  
+Sarcasm_Final/
+├── readme.md
 ├── requirements.txt                         # Project dependencies and pinned library versions for pip installation
 ├── Exploratory_Data_Analysis/
 │   ├── eda.ipynb                            # Python code for exploratory data analysis 
