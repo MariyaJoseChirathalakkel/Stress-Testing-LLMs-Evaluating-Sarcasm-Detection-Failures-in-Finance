@@ -133,29 +133,34 @@ The following step explains how to set up the environment, install and configure
 ### 2. Setting up a virtual environment 
 
 Run the below command on the terminal to create the environment named stress 
-
+```bash
 python3 -m venv stress
 source stress/bin/activate
+```
 
 ### 3. Install Dependencies 
 
 Install the required Python libraries from the requirements.txt file 
-
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
+```
 
 ### 4. Download and set up Ollama 
 
 Download Ollama from https://ollama.com/ and drag the application to the application folder 
 To pull the required LLMS used in the study, use the following bash commands
-
+```bash
 ollama pull deepseek-r1:8b
 ollama pull llama3.2:3b
+```
 
 Verify if the installation is completed successfully by running the bash command 
 
-Bash
+```bash
 ollama list
+```
+
 
 ### 5. Run the code on VS Code 
 
