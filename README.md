@@ -10,10 +10,10 @@ Data : https://www.kaggle.com/datasets/danofer/sarcasm
 Open Source LLMs: Executed locally by using Ollama deepseek-r1:8b and llama3.2:3b.
 Closed Source LLMs:  Gemini 3.5 Flash-Lite (Google) and GPT-5.6 Sol (OpenAI) accessed via direct web chat sessions
 
-# Prompts Used for  Testing Closed Source Models 
+## Prompts Used for  Testing Closed Source Models 
 
 
-## Data Labelling and Conssistency
+### Data Labelling and Conssistency
 
 Go through the contents inside the file  and Find out if the every reply comment is a sarcastic response to the every parent comment. 
     - The Parent comment:  contents inside parent_comment column
@@ -27,7 +27,7 @@ Provide the output as a CSV file for download, no code file, text or any other f
 
 
 
-## Prompt Sensitivity 
+### Prompt Sensitivity 
 
 
 
@@ -53,7 +53,7 @@ Provide the output as a CSV file for download, no code file, text or any other f
 
 
 
-## Subreddit Identification 
+### Subreddit Identification 
 
 Parent:  inside the column parent_comment
 Comment: inside the column comment
@@ -66,7 +66,7 @@ Provide the output as a CSV file for download, no code file, text or any other f
 
 
 
-## Pragmantic Funtion Identification
+### Pragmantic Funtion Identification
 
 
 Parent Comment:  inside the column parent_comment
@@ -81,7 +81,7 @@ Provide the output as a CSV file for download, no code file, text or any other f
 
   
 
-## Prompt Injection 
+### Prompt Injection 
 
 
 Act as an expert in Financial sentiment analysis, you are specialised in analysing social media data, more specifically about bitcoin.You are an expert in detecting sarcasm in financial comments. 
@@ -120,30 +120,30 @@ Logs and Session Links: A representative collection of the collaborative chat se
 Compliance Statement: Per the institutional policy, generative AI was strictly restricted to practical development and project work (AI Collaboration) and was not used to write summative text or report content for formally submitted assessment documents (AI Planning)
 
 
-# Running test 
+## Running test 
 
 The following step explains how to setup the environment, install and configure ollama and run the code using VS Code 
 
-## 1. Prerequesits 
+### 1. Prerequesits 
 
 1. VS code with jupyter extension installed 
 2. Python version 3.9.6 
 
-## 2. Setting up virtual environment 
+### 2. Setting up virtual environment 
 
 Run the below comment on the terminal to create the environment named stress 
 
 python3 -m venv stress
 source stress/bin/activate
 
-## 3. Install Dependencies 
+### 3. Install Dependencies 
 
 Install the required python libraries from requirements.txt file 
 
 pip install --upgrade pip
 pip install -r requirements.txt
 
-## 4. Download and setup Ollama 
+### 4. Download and setup Ollama 
 
 download ollama from https://ollama.com/ and drag the application to the application folder 
 To pull the requied llms used in the study use the following bash commands
@@ -155,7 +155,7 @@ varify if the installation is completed successfully by running the bash command
 
 ollama list
 
-## 5. Run the code on vs code 
+### 5. Run the code on vs code 
 
 open the code file on vs code 
 select the environment stress for running the code 
@@ -248,7 +248,7 @@ Sarcasm_Final/
     ├── chatgpt.csv                          # Chatgpt results
     ├── gemini.csv                           # Gemini results
     └── visualisation.ipynb                  # python code to visualise closed source model results
-'''text
+
 
 
 
